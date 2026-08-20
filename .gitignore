@@ -1,0 +1,33 @@
+# === Terraform ===
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+*tfplan*
+*.tfvars.json
+.terraform.lock.hcl
+
+# === Ansible & Vault Secrets ===
+.vault_password
+*.decrypted
+*.retry
+
+# === AWS & Environment Credentials ===
+.aws/
+.env
+
+# === SSH Keys ===
+*.pem
+*.pub
+id_rsa*
+
+# === Operating System & IDEs ===
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Python
+__pycache__/
+*.pyc
