@@ -19,11 +19,15 @@ jobs:
       - name: Helm repo setup
         run: |
           helm repo add bitnami https://charts.bitnami.com/bitnami
-          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
           helm repo update
 
+      - name: Pull charts locally
+        run: |
+          helm pull bitnami/mysql --untar --untardir /tmp/charts
+          helm pull bitnami/wordpress --untar --untardir /tmp/charts
+
       - name: Lint MySQL values
-        run: helm lint bitnami/mysql --values helm/mysql-values.yaml
+        run: helm lint /tmp/charts/mysql --values helm/mysql-values.yaml
 
       - name: Lint WordPress values
-        run: helm lint bitnami/wordpress --values helm/wordpress-values.yaml
+        run: helm lint /tmp/charts/wordpress --values helm/wordpress-values.yaml
