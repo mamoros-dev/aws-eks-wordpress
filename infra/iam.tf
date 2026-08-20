@@ -113,7 +113,7 @@ data "aws_iam_policy_document" "github_actions_eks_trust" {
     condition {
       test     = "StringLike"
       variable = "token.actions.githubusercontent.com:sub"
-      values   = ["repo:mamoros-dev/aws-eks-wordpress:*"]
+      values   = ["repo:mamoros-dev@55656115/aws-eks-wordpress@1337678340:*"]
     }
   }
 }

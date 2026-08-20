@@ -26,7 +26,7 @@ jobs:
       - uses: azure/setup-helm@v4
 
       - name: Install helm-diff plugin
-        run: helm plugin install https://github.com/databus23/helm-diff
+        run: helm plugin install https://github.com/databus23/helm-diff --version v3.9.5 --verify=false
 
       - name: Helm repos
         run: |
