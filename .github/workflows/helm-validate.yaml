@@ -1,0 +1,29 @@
+name: Helm Validate
+
+on:
+  pull_request:
+    paths:
+      - 'helm/**'
+      - 'k8s/**'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: 'latest'
+
+      - name: Helm repo setup
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+
+      - name: Lint MySQL values
+        run: helm lint bitnami/mysql --values helm/mysql-values.yaml
+
+      - name: Lint WordPress values
+        run: helm lint bitnami/wordpress --values helm/wordpress-values.yaml

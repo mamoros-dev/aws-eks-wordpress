@@ -93,3 +93,48 @@ resource "aws_eks_addon" "ebs_csi" {
   service_account_role_arn  = aws_iam_role.ebs_csi_driver.arn
   resolve_conflicts_on_update = "OVERWRITE"
 }
+
+data "aws_iam_policy_document" "github_actions_eks_trust" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = ["arn:aws:iam::700213287974:oidc-provider/token.actions.githubusercontent.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringLike"
+      variable = "token.actions.githubusercontent.com:sub"
+      values   = ["repo:mamoros-dev/aws-eks-wordpress:*"]
+    }
+  }
+}
+
+resource "aws_iam_role" "github_actions_eks" {
+  name               = "proyecto5-github-actions-eks-role"
+  assume_role_policy = data.aws_iam_policy_document.github_actions_eks_trust.json
+}
+
+resource "aws_iam_role_policy" "github_actions_eks_access" {
+  name = "eks-describe-access"
+  role = aws_iam_role.github_actions_eks.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect   = "Allow"
+        Action   = ["eks:DescribeCluster"]
+        Resource = aws_eks_cluster.main.arn
+      }
+    ]
+  })
+}
