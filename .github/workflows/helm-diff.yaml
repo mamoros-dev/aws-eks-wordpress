@@ -1,0 +1,44 @@
+name: Helm Diff
+
+on:
+  pull_request:
+    paths:
+      - 'helm/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::700213287974:role/proyecto5-github-actions-eks-role
+          aws-region: eu-west-1
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name proyecto5-wordpress --region eu-west-1
+
+      - uses: azure/setup-helm@v4
+
+      - name: Install helm-diff plugin
+        run: helm plugin install https://github.com/databus23/helm-diff
+
+      - name: Helm repos
+        run: |
+          helm repo add bitnami https://charts.bitnami.com/bitnami
+          helm repo update
+
+      - name: Diff MySQL
+        run: helm diff upgrade mysql bitnami/mysql -n wordpress --values helm/mysql-values.yaml || true
+
+      - name: Diff WordPress
+        run: |
+          helm diff upgrade wordpress bitnami/wordpress -n wordpress --values helm/wordpress-values.yaml \
+            --set image.repository=bitnamilegacy/wordpress \
+            --set image.tag=latest \
+            --set global.security.allowInsecureImages=true || true
