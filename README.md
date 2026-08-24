@@ -1,4 +1,4 @@
-# Proyecto 5 — WordPress + MySQL en Kubernetes
+# WordPress + MySQL en Kubernetes
 
 + Migración de una arquitectura clásica WordPress + MySQL a un clúster de Kubernetes gestionado en AWS (EKS), aplicando principios de infraestructura como código, almacenamiento persistente, autoescalado, observabilidad y CI/CD.
 
