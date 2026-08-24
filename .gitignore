@@ -31,3 +31,8 @@ id_rsa*
 # Python
 __pycache__/
 *.pyc
+
+# Ficheros personales
+RESTART.md
+OPERACIONES.md
+debug-oidc.yaml
