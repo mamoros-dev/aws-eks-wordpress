@@ -33,6 +33,6 @@ __pycache__/
 *.pyc
 
 # Ficheros personales
-RESTART.md
-OPERACIONES.md
-debug-oidc.yaml
+*RESTART.md
+*OPERACIONES.md
+*debug-oidc.yaml
