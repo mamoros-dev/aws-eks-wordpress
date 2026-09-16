@@ -1,3 +1,5 @@
+# --- Resource for the EKS Cluster ---
+# --- Recurso para el clúster EKS ---
 resource "aws_eks_cluster" "main" {
   name     = var.cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
@@ -22,13 +24,15 @@ resource "aws_eks_cluster" "main" {
   }
 }
 
+# --- Resource for the EKS Node Group ---
+# --- Recurso para el grupo de nodos EKS ---
 resource "aws_eks_node_group" "main" {
   cluster_name    = aws_eks_cluster.main.name
   node_group_name = "${var.cluster_name}-nodes"
   node_role_arn   = aws_iam_role.eks_node_role.arn
   subnet_ids      = [for s in aws_subnet.private : s.id]
 
-  instance_types = ["t3.small"]
+  instance_types = ["t3.medium"]
 
   scaling_config {
     desired_size = 2
@@ -44,11 +48,15 @@ resource "aws_eks_node_group" "main" {
   ]
 }
 
+# --- Resource for GitHub Actions IAM Role ---
+# --- Recurso para el rol IAM de GitHub Actions ---
 resource "aws_eks_access_entry" "github_actions" {
   cluster_name  = aws_eks_cluster.main.name
   principal_arn = aws_iam_role.github_actions_eks.arn
 }
 
+# --- Resource for GitHub Actions IAM Role Policy Attachment ---
+# --- Recurso para la asociación de políticas del rol IAM de GitHub Actions ---
 resource "aws_eks_access_policy_association" "github_actions_admin" {
   cluster_name  = aws_eks_cluster.main.name
   principal_arn = aws_iam_role.github_actions_eks.arn

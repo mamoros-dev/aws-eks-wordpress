@@ -1,3 +1,5 @@
+# --- Variables for the EKS cluster ---
+# --- Variables for the EKS cluster ---
 variable "cluster_name" {
   description = "Nombre del clúster EKS"
   type        = string

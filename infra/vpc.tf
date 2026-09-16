@@ -1,3 +1,7 @@
+# This file defines the VPC, subnets, internet gateway, NAT gateway, and route tables for the EKS cluster. It creates a VPC with public and private subnets in two availability zones (eu-west-1a and eu-west-1b). The public subnets are associated with an internet gateway, while the private subnets are associated with a NAT gateway for outbound internet access. The route tables are configured accordingly to route traffic through the appropriate gateways.
+
+# --- Resource for the VPC ---
+# --- Recurso para la VPC ---
 resource "aws_vpc" "eks_vpc" {
   cidr_block           = "10.1.0.0/16"
   enable_dns_support   = true
@@ -8,6 +12,8 @@ resource "aws_vpc" "eks_vpc" {
   }
 }
 
+# --- Resource for the Internet Gateway ---
+# --- Recurso para la puerta de enlace a Internet ---
 resource "aws_internet_gateway" "eks_igw" {
   vpc_id = aws_vpc.eks_vpc.id
 
@@ -16,6 +22,8 @@ resource "aws_internet_gateway" "eks_igw" {
   }
 }
 
+# --- Resources for Public and Private Subnets ---
+# --- Recursos para subredes públicas y privadas ---
 resource "aws_subnet" "public" {
   for_each = {
     "eu-west-1a" = "10.1.0.0/24"
@@ -51,6 +59,8 @@ resource "aws_subnet" "private" {
   }
 }
 
+# --- Resources for NAT Gateway and Route Tables ---
+# --- Recursos para la puerta de enlace NAT y tablas de enrutamiento ---
 resource "aws_eip" "nat" {
   domain = "vpc"
 
