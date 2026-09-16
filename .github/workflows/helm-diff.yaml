@@ -1,3 +1,5 @@
+# --- GitHub Actions Workflow for Helm Diff ---
+# --- Flujo de trabajo de GitHub Actions para la diferencia de Helm ---
 name: Helm Diff
 
 on:

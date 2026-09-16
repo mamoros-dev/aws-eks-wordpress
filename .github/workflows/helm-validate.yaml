@@ -1,3 +1,5 @@
+# --- GitHub Actions Workflow for Helm Chart Validation ---
+# --- Flujo de trabajo de GitHub Actions para la validación del gráfico de Helm ---
 name: Helm Validate
 
 on:

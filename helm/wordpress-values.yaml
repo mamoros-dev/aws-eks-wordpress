@@ -1,3 +1,5 @@
+# --- WordPress Helm Chart Values ---
+# --- Valores del gráfico de Helm de WordPress ---
 externalDatabase:
   host: mysql.wordpress.svc.cluster.local
   port: 3306

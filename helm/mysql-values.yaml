@@ -1,3 +1,5 @@
+# --- MySQL Helm Chart Values ---
+# --- Valores del gráfico de Helm de MySQL ---
 auth:
   existingSecret: mysql-root-secret
   database: wordpress
